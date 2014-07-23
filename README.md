@@ -1,0 +1,2 @@
+Arquivos base para iniciar um projeto LAMP e menu simples em 'HTML Application (HTA)' para facilitar iniciar, reiniciar etc
+Files to start a LAMP based project and simple menu 'HTML Application (HTA)' to facilitate start, restart etc.
