@@ -7,9 +7,4 @@ class system-update {
 		timeout => 0,
 	}
 
-  $sysPackages = [ "build-essential" ]
-  package { $sysPackages:
-    ensure => "installed",
-    require => Exec['apt-get update'],
-  }
 }
