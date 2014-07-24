@@ -1,0 +1,120 @@
+<html>
+<title>Vagrant</title>
+<head>
+
+		 <HTA:APPLICATION
+			ApplicationName="Vagrant"
+			Scroll="no"
+			SingleInstance="yes"
+			MaximizeButton = "No"
+			WindowState="Normal">
+</head>
+
+<style>
+
+		 BODY
+		 {
+			   background-color: buttonface;
+			   Font: arial,sans-serif
+			   margin-top: 10px;
+			   margin-left: 20px;
+			   margin-right: 20px;
+			   margin-bottom: 5px;
+		 }
+		 .button
+		 {
+
+			   width: 101px;
+			   height: 25px;
+			   font-family: arial,sans-serif;
+			   font-size: 8pt;
+		 }
+
+		 td
+		 {
+			   font-family: arial,sans-serif;
+			   font-size: 10pt;
+
+		 }
+		 #scroll
+		 {
+			height:100%;
+			overflow:auto;
+		 }
+
+		 SELECT.FixedWidth
+		 {
+		  width: 17em;  /* maybe use px for pixels or pt for points here */
+		 }
+
+</style>
+<script language="VBScript">
+		 Sub Window_OnLoad
+			window.resizeTo 200,320
+			vmName.innerHtml = GetCurrDir()
+		 End Sub
+
+		 Function GetCurrDir()
+			Set objFSO = CreateObject("Scripting.FileSystemObject") 
+			Set WshShell = CreateObject("WScript.Shell") 
+			'### document.location.href always returns the HTML rendering of own fully-qualified 
+			'### location: "file:///" followed by fully-qualified path to curr file, but elements  
+			'### are separated by FORWARD slashes and spaces are rendered as "%20". 
+			'### Capture it, strip off leading data, replace slashes and escape sequences. 
+			strHtmlLocnVal = document.location.href 
+			strThisHTA = Replace(Right(strHtmlLocnVal, Len(strHtmlLocnVal) - 8), "/", "\") 
+			strThisHTA = UnEscape(strThisHTA) 
+			'### Bind FSO to the file and capture parent directory. 
+			Set objThisFile = objFSO.GetFile(strThisHTA) 
+			objParentDir = objThisFile.ParentFolder 
+			Set objFolder = objFSO.GetFolder(objParentDir)
+			GetCurrDir = Right(objFolder, Len(objFolder) - InStrRev(objFolder, "\"))
+		 End Function
+
+		 Sub Up
+			Set objShell = CreateObject("WScript.Shell")
+			If chkNoProvision.Checked Then
+				objShell.Run "vagrant up --no-provision & pause"
+			Else
+				objShell.Run "vagrant up & pause"
+			End If
+			window.close
+		 End Sub
+
+		 Sub Halt
+			Set objShell = CreateObject("WScript.Shell")
+			objShell.Run "vagrant halt & pause"
+			window.close
+		 End Sub
+		 
+		 Sub Reload
+			Set objShell = CreateObject("WScript.Shell")
+			objShell.Run "vagrant reload & pause"
+			window.close
+		 End Sub
+
+		 Sub Provision
+			Set objShell = CreateObject("WScript.Shell")
+			objShell.Run "vagrant provision & pause"
+		 End Sub
+
+</script>
+<body>
+		 <span id="vmName" style="font-size: 16pt;font-weight: bold">VM MENU</span>
+		 <br>
+		 <input type="checkbox" name="chkNoProvision" title="No Provision"> No Provisioning
+		 <br>
+		 <input class="button" TYPE=BUTTON value="Up" name="btnUp" onClick="Up" class="btnUp">
+		 <br>
+		 <br>
+		 <input class="button" TYPE=BUTTON value="Halt" name="btnDown" onClick="Halt">
+		 <br>
+		 <br>
+		 <input class="button" TYPE=BUTTON value="Reload" name="btnDown" onClick="Reload">
+		 <br>
+		 <br>
+		 <input class="button" TYPE=BUTTON value="Provision" name="btnProvision" onClick="Provision">
+		 <br>
+		 <br>
+</body>
+</html>
