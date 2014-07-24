@@ -31,6 +31,10 @@ class php{
   package { "php5-dev":
     ensure => present,
   }
+  
+  package { "php5-gd":
+    ensure => present,
+  }
  
   package { "php5-curl":
     ensure => present,
